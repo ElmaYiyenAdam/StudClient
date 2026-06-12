@@ -6,8 +6,11 @@ _G.FarmStates = {
     Rebirth = false,
     Token = false,
     Blocks = false,
-    XP = false
+    XP = false,
+    Core = false
 }
+
+_G.CoreGainAmount = 1
 
 local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
 
@@ -129,6 +132,37 @@ FarmTab:CreateToggle({
             task.spawn(function()
                 while _G.FarmStates.Blocks do
                     RS:WaitForChild("Area3"):WaitForChild("BlocksGain"):FireServer()
+                    task.wait()
+                end
+            end)
+        end
+   end,
+})
+
+FarmTab:CreateSection("Core Settings")
+
+FarmTab:CreateInput({
+   Name = "Core Gain Amount",
+   PlaceholderText = "Enter amount (Default: 1)",
+   RemoveTextAfterFocusLost = false,
+   Callback = function(Text)
+        local num = tonumber(Text)
+        if num then
+            _G.CoreGainAmount = num
+        end
+   end,
+})
+
+FarmTab:CreateToggle({
+   Name = "Core Generator",
+   CurrentValue = false,
+   Flag = "Toggle_Core",
+   Callback = function(Value)
+        _G.FarmStates.Core = Value
+        if Value then
+            task.spawn(function()
+                while _G.FarmStates.Core do
+                    RS:WaitForChild("Area4"):WaitForChild("CoreGain"):FireServer(_G.CoreGainAmount)
                     task.wait()
                 end
             end)
