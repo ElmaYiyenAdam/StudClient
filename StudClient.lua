@@ -5,7 +5,8 @@ _G.FarmStates = {
     Points = false,
     Rebirth = false,
     Token = false,
-    Blocks = false
+    Blocks = false,
+    XP = false
 }
 
 local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
@@ -60,6 +61,23 @@ FarmTab:CreateToggle({
             task.spawn(function()
                 while _G.FarmStates.Points do
                     RS:WaitForChild("Area2"):WaitForChild("PointsGain"):FireServer(1)
+                    task.wait()
+                end
+            end)
+        end
+   end,
+})
+
+FarmTab:CreateToggle({
+   Name = "Auto XP",
+   CurrentValue = false,
+   Flag = "Toggle_XP",
+   Callback = function(Value)
+        _G.FarmStates.XP = Value
+        if Value then
+            task.spawn(function()
+                while _G.FarmStates.XP do
+                    RS:WaitForChild("AddXpEvent"):FireServer()
                     task.wait()
                 end
             end)
